@@ -3,6 +3,7 @@ package edsm
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 )
 
 type Credentials struct {
@@ -11,10 +12,12 @@ type Credentials struct {
 
 type Service struct {
 	Creds *Credentials
+	HttpClient   http.Client
 }
 
 func NewService() *Service {
 	res := &Service{}
+	res.HttpClient.Timeout = 8 * time.Second
 	return res
 }
 
@@ -44,7 +47,7 @@ func (srv *Service) System(name string) *RespSystem {
 	q.Set("showId", "1")
 	rq.URL.RawQuery = q.Encode()
 	rq.Header.Set("Accept", "application/json")
-	resp, err := http.DefaultClient.Do(rq)
+	resp, err := srv.HttpClient.Do(rq)
 	if err != nil {
 		return nil
 	}
