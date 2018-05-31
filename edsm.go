@@ -28,12 +28,14 @@ func VersionStr() string {
 }
 
 type Credentials struct {
-	ApiKey string `json:",omitempty"`
+	EdsmCmdr string `json:",omitempty"`
+	ApiKey   string `json:",omitempty"`
 }
 
 type Service struct {
 	Endp       string
 	Creds      *Credentials
+	Game       GameStateRd
 	HttpClient http.Client
 }
 

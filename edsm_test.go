@@ -26,7 +26,7 @@ func TestDiscard(t *testing.T) {
 	}
 	srv := NewService(Test)
 	discs := []string{"-MUST GO AWAY-"}
-	err := srv.Discard(discs)
+	err := srv.Discard(&discs)
 	if err != nil {
 		t.Error(err)
 	}
@@ -37,5 +37,18 @@ func TestDiscard(t *testing.T) {
 		if e == "-MUST GO AWAY-" {
 			t.Error("discard list did not overwrite")
 		}
+		t.Logf("discard: '%s'\n", e)
+	}
+}
+
+func TestJournal(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipped test in short mode")
+	}
+	srv := NewService(Test)
+	eventStr := `{ "timestamp":"2018-04-29T14:30:52Z", "event":"Cargo", "Inventory":[ { "Name":"drones", "Name_Localised":"Limpet", "Count":4, "Stolen":0 }, { "Name":"grain", "Count":1, "Stolen":0 } ] }`
+	err := srv.Journal("goEDSM-Tester", eventStr)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
