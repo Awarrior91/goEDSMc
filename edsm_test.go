@@ -47,7 +47,7 @@ func TestJournal(t *testing.T) {
 	}
 	srv := NewService(Test)
 	eventStr := `{ "timestamp":"2018-04-29T14:30:52Z", "event":"Cargo", "Inventory":[ { "Name":"drones", "Name_Localised":"Limpet", "Count":4, "Stolen":0 }, { "Name":"grain", "Count":1, "Stolen":0 } ] }`
-	err := srv.Journal("goEDSM-Tester", eventStr)
+	err := srv.Journal("goEDSMc-Tester", eventStr)
 	if err != nil {
 		t.Fatal(err)
 	}

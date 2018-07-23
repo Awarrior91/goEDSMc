@@ -71,7 +71,7 @@ func (srv *Service) System(name string, flags uint32) (*RespSystem, error) {
 	}
 	rq.URL.RawQuery = q.Encode()
 	rq.Header.Set("Accept", "application/json")
-	resp, err := srv.HttpClient.Do(rq)
+	resp, err := srv.Http.Do(rq)
 	if err != nil {
 		return nil, err
 	}

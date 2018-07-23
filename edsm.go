@@ -8,7 +8,7 @@ import (
 
 type Endpoint string
 
-//go:generate ./genversion.sh
+//go:generate versioner -bno build_no -pkg edsm ./VERSION ./version.go
 const (
 	Software = "[qb]goEDSM"
 
@@ -16,13 +16,15 @@ const (
 	Life Endpoint = "https://www.edsm.net/"
 	// Test is the service endpoint recommended for testing clients
 	Test Endpoint = "https://beta.edsm.net/"
+
+	ConentType = "application/json; charset=utf-8"
 )
 
 var vStr string
 
 func VersionStr() string {
 	if len(vStr) == 0 {
-		vStr = fmt.Sprintf("%d.%d.%d%s", Vmajor, Vminor, Vbugfix, Vquality)
+		vStr = fmt.Sprintf("%d.%d.%d%s", Major, Minor, Bugfix, Quality)
 	}
 	return vStr
 }
@@ -33,15 +35,15 @@ type Credentials struct {
 }
 
 type Service struct {
-	Endp       string
-	Creds      *Credentials
-	Game       GameStateRd
-	HttpClient http.Client
+	Endp  string
+	Creds *Credentials
+	Game  GameStateRd
+	Http  http.Client
 }
 
 func NewService(endpoint Endpoint) *Service {
 	res := &Service{Endp: string(endpoint)}
-	res.HttpClient.Timeout = 8 * time.Second
+	res.Http.Timeout = 8 * time.Second
 	return res
 }
 

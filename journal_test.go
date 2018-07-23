@@ -41,6 +41,6 @@ func TestFsdJump(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping test in short mode")
 	}
-	srv := NewService(Test)
-
+	//srv := NewService(Test)
+	// TODO …
 }

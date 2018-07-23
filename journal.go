@@ -3,6 +3,8 @@ package edsm
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -16,7 +18,7 @@ func (srv *Service) Discard(events *[]string) error {
 	q := rq.URL.Query()
 	rq.URL.RawQuery = q.Encode()
 	rq.Header.Set("Accept", "application/json")
-	resp, err := srv.HttpClient.Do(rq)
+	resp, err := srv.Http.Do(rq)
 	if err != nil {
 		return err
 	}
@@ -169,7 +171,15 @@ func (srv *Service) Journal(cmdr string, event string) error {
 	if err != nil {
 		return err
 	}
-	rq, _ := http.NewRequest("POST", srv.url(pathJournal), bytes.NewBuffer(rqStr))
-	_, err = srv.HttpClient.Do(rq)
-	return err
+	rd := bytes.NewBuffer(rqStr)
+	resp, err := srv.Http.Post(srv.url(pathJournal), ConentType, rd)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		msg, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("%d: %s", resp.StatusCode, string(msg))
+	}
+	return nil
 }
