@@ -10,7 +10,7 @@ type Endpoint string
 
 //go:generate versioner -bno build_no -pkg edsm ./VERSION ./version.go
 const (
-	Software = "[qb]goEDSM"
+	Software = "goEDSMc"
 
 	// Life is the service endpoint for the life EDSM system
 	Life Endpoint = "https://www.edsm.net/"
